@@ -1,0 +1,6 @@
+{
+  "name": "RoomSetu",
+  "description": "Direct owner-to-renter property rental marketplace with interactive Google Maps geolocation, inquiry management, and admin approval workflows.",
+  "requestFramePermissions": ["geolocation", "camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
