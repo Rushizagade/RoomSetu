@@ -1,16 +1,22 @@
 {
-  "name": "react-example",
+  "name": "roomsetu",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx server.ts",
-    "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
-    "start": "node dist/server.cjs",
-    "preview": "vite preview",
-    "clean": "rm -rf dist server.js",
-    "lint": "tsc --noEmit"
+    "install:all": "npm install && npm install --workspace=backend && npm install --workspace=frontend",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "build": "npm run build --workspace=backend && npm run build --workspace=frontend",
+    "build:backend": "npm run build --workspace=backend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "start": "npm run start --workspace=backend",
+    "lint": "npm run lint --workspace=backend && npm run lint --workspace=frontend"
   },
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
   "dependencies": {
     "@google/genai": "^2.4.0",
     "@googlemaps/js-api-loader": "^2.1.1",
