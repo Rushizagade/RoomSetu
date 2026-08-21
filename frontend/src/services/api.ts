@@ -11,7 +11,9 @@ import {
   LocationSuggestion,
 } from '../types/index.ts';
 
-const API_BASE = '/api';
+const API_BASE = process.env.VITE_API_URL 
+  ? `${process.env.VITE_API_URL}/api` 
+  : '/api';
 
 function getAuthHeader(): Record<string, string> {
   const token = localStorage.getItem('roomsetu_token');
