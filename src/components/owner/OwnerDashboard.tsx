@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Property, Inquiry, Visit } from '../../types/index.ts';
 import { api } from '../../services/api.ts';
 import { useNotifications } from '../../context/NotificationContext.tsx';
+import { useAuth } from '../../context/AuthContext.tsx';
 import {
   Building2,
   Plus,
@@ -18,6 +19,7 @@ import {
   MapPin,
   Check,
   X,
+  UserCheck,
 } from 'lucide-react';
 
 interface OwnerDashboardProps {
@@ -25,6 +27,7 @@ interface OwnerDashboardProps {
 }
 
 export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ onOpenAddWizard }) => {
+  const { switchRole } = useAuth();
   const { showToast } = useNotifications();
   const [properties, setProperties] = useState<Property[]>([]);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
@@ -134,7 +137,17 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ onOpenAddWizard 
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            id="owner-preview-tenant-btn"
+            onClick={() => switchRole('USER')}
+            className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs px-3.5 py-3 rounded-xl border border-white/20 flex items-center gap-1.5 transition-colors cursor-pointer"
+            title="Switch to Tenant Search mode"
+          >
+            <UserCheck className="w-4 h-4 text-emerald-400" />
+            <span>Switch to Tenant / Search Rooms</span>
+          </button>
+
           <button
             id="owner-refresh-btn"
             onClick={loadOwnerData}

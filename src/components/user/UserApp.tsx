@@ -37,7 +37,7 @@ interface UserAppProps {
 }
 
 export const UserApp: React.FC<UserAppProps> = ({ initialTab = 'search' }) => {
-  const { user, navigateTo, openAuthModal } = useAuth();
+  const { user, navigateTo, openAuthModal, switchRole } = useAuth();
   const [activeTab, setActiveTab] = useState<'search' | 'saved' | 'inquiries'>(initialTab);
   const [properties, setProperties] = useState<Property[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -269,6 +269,22 @@ export const UserApp: React.FC<UserAppProps> = ({ initialTab = 'search' }) => {
               </button>
             </div>
           )}
+
+          {/* Quick Switch / Landlord CTA */}
+          <button
+            id="user-post-property-cta-btn"
+            onClick={async () => {
+              if (user) {
+                await switchRole('ROOM_OWNER');
+              } else {
+                navigateTo('OWNER_LOGIN');
+              }
+            }}
+            className="hidden lg:flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+          >
+            <Building2 className="w-3.5 h-3.5" />
+            <span>Have a room to rent? List as Owner →</span>
+          </button>
         </div>
       </div>
 

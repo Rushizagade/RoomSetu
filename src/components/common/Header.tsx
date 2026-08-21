@@ -44,15 +44,18 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onTabChange }) => {
         <div className="flex items-center gap-1 bg-slate-800/90 p-1 rounded-lg border border-slate-700">
           <button
             id="switch-role-user-btn"
-            onClick={() => {
+            onClick={async () => {
               if (user && user.role === 'USER') {
                 navigateTo('MAIN_APP');
+              } else if (user) {
+                // Instantly switch active role to Tenant
+                await switchRole('USER');
               } else {
                 navigateTo('USER_LOGIN');
               }
             }}
             className={`px-3 py-1 rounded-md font-medium text-xs flex items-center gap-1.5 transition-all cursor-pointer ${
-              (user && user.role === 'USER') || currentView === 'USER_LOGIN'
+              (user && user.role === 'USER' && currentView === 'MAIN_APP') || currentView === 'USER_LOGIN'
                 ? 'bg-emerald-600 text-white shadow-xs'
                 : 'text-slate-300 hover:text-white hover:bg-slate-700/60'
             }`}
@@ -63,15 +66,18 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onTabChange }) => {
 
           <button
             id="switch-role-owner-btn"
-            onClick={() => {
+            onClick={async () => {
               if (user && user.role === 'ROOM_OWNER') {
                 navigateTo('MAIN_APP');
+              } else if (user) {
+                // Instantly switch active role to Room Owner
+                await switchRole('ROOM_OWNER');
               } else {
                 navigateTo('OWNER_LOGIN');
               }
             }}
             className={`px-3 py-1 rounded-md font-medium text-xs flex items-center gap-1.5 transition-all cursor-pointer ${
-              (user && user.role === 'ROOM_OWNER') || currentView === 'OWNER_LOGIN'
+              (user && user.role === 'ROOM_OWNER' && currentView === 'MAIN_APP') || currentView === 'OWNER_LOGIN'
                 ? 'bg-blue-600 text-white shadow-xs'
                 : 'text-slate-300 hover:text-white hover:bg-slate-700/60'
             }`}
@@ -82,15 +88,17 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onTabChange }) => {
 
           <button
             id="switch-role-admin-btn"
-            onClick={() => {
+            onClick={async () => {
               if (user && user.role === 'ADMIN') {
                 navigateTo('MAIN_APP');
+              } else if (user) {
+                await switchRole('ADMIN');
               } else {
                 navigateTo('ADMIN_LOGIN');
               }
             }}
             className={`px-3 py-1 rounded-md font-medium text-xs flex items-center gap-1.5 transition-all cursor-pointer ${
-              (user && user.role === 'ADMIN') || currentView === 'ADMIN_LOGIN'
+              (user && user.role === 'ADMIN' && currentView === 'MAIN_APP') || currentView === 'ADMIN_LOGIN'
                 ? 'bg-purple-600 text-white shadow-xs'
                 : 'text-slate-300 hover:text-white hover:bg-slate-700/60'
             }`}
@@ -208,11 +216,22 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onTabChange }) => {
               {user.role === 'USER' && (
                 <button
                   id="header-list-property-btn"
-                  onClick={() => navigateTo('OWNER_LOGIN')}
-                  className="hidden md:flex items-center gap-1.5 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-lg border border-blue-200 transition-colors cursor-pointer"
+                  onClick={() => switchRole('ROOM_OWNER')}
+                  className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-xl border border-blue-200 transition-colors cursor-pointer"
                 >
                   <Building2 className="w-4 h-4" />
                   <span>Switch to Owner Portal</span>
+                </button>
+              )}
+
+              {user.role === 'ROOM_OWNER' && (
+                <button
+                  id="header-search-rooms-btn"
+                  onClick={() => switchRole('USER')}
+                  className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-3 py-2 rounded-xl border border-emerald-200 transition-colors cursor-pointer"
+                >
+                  <UserCheck className="w-4 h-4" />
+                  <span>Switch to Tenant / Search Rooms</span>
                 </button>
               )}
 
