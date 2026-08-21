@@ -31,6 +31,7 @@ export interface AdminUser {
   id: string;
   name: string;
   email: string;
+  avatar?: string;
   role: 'ADMIN';
   createdAt: string;
 }
@@ -189,6 +190,7 @@ export interface Inquiry {
   userName?: string;
   userPhone?: string;
   ownerId: string;
+  ownerName?: string;
   propertyId: string;
   propertyName?: string;
   propertyAddress?: string;
@@ -199,6 +201,7 @@ export interface Inquiry {
   tenantProfile?: string;
   status: InquiryStatus;
   ownerResponse?: string;
+  ownerReply?: string;
   createdAt: string;
   updatedAt: string;
 }
