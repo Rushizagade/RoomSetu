@@ -6,8 +6,6 @@ import {
   Calendar,
   Clock,
   CheckCircle,
-  AlertCircle,
-  Phone,
   Building2,
   RefreshCw,
   Loader2,
@@ -39,17 +37,17 @@ export const UserInquiriesView: React.FC = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'RESPONDED':
-        return <span className="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2 py-0.5 rounded-full">Owner Responded</span>;
+        return <span className="bg-slate-900 text-white text-[10px] font-semibold px-2 py-0.5 rounded-md">Owner Responded</span>;
       case 'SENT':
-        return <span className="bg-blue-100 text-blue-800 text-[11px] font-bold px-2 py-0.5 rounded-full">Sent · Pending</span>;
+        return <span className="bg-slate-100 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-md border border-slate-200">Sent · Pending</span>;
       case 'ACCEPTED':
-        return <span className="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2 py-0.5 rounded-full">Visit Confirmed</span>;
+        return <span className="bg-slate-900 text-white text-[10px] font-semibold px-2 py-0.5 rounded-md">Visit Confirmed</span>;
       case 'REJECTED':
-        return <span className="bg-rose-100 text-rose-800 text-[11px] font-bold px-2 py-0.5 rounded-full">Slot Unavailable</span>;
+        return <span className="bg-slate-200 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-md">Slot Unavailable</span>;
       case 'REQUESTED':
-        return <span className="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded-full">Awaiting Owner Confirmation</span>;
+        return <span className="bg-slate-100 text-slate-800 text-[10px] font-semibold px-2 py-0.5 rounded-md border border-slate-200">Awaiting Owner Confirmation</span>;
       default:
-        return <span className="bg-slate-100 text-slate-800 text-[11px] font-bold px-2 py-0.5 rounded-full">{status}</span>;
+        return <span className="bg-slate-100 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-md border border-slate-200">{status}</span>;
     }
   };
 
@@ -58,70 +56,72 @@ export const UserInquiriesView: React.FC = () => {
       {/* Top Selector */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-black text-slate-900">Inquiries & Visits Tracker</h2>
-          <p className="text-xs text-slate-500">Track direct communications and scheduled visits with property owners</p>
+          <h2 className="text-xl font-bold text-slate-900 tracking-tight">Inquiries & Visits Tracker</h2>
+          <p className="text-xs text-slate-500 mt-0.5">Track direct communications and scheduled visits with room owners</p>
         </div>
 
         <button
           id="refresh-inquiries-btn"
           onClick={loadData}
-          className="p-2 text-slate-600 hover:text-emerald-700 hover:bg-slate-100 rounded-lg flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+          className="p-2 bg-white text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-xl border border-slate-200 flex items-center gap-1.5 text-xs font-semibold cursor-pointer shadow-2xs"
         >
-          <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
           <span>Refresh</span>
         </button>
       </div>
 
       {/* Sub Tabs */}
-      <div className="flex border-b border-slate-200 gap-6">
+      <div className="bg-slate-100 p-1 rounded-xl flex items-center gap-1 border border-slate-200/60 max-w-sm">
         <button
           id="tab-user-inquiries"
           onClick={() => setActiveSubTab('inquiries')}
-          className={`pb-3 font-bold text-sm flex items-center gap-2 border-b-2 transition-all cursor-pointer ${
+          className={`flex-1 py-2 rounded-lg font-semibold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
             activeSubTab === 'inquiries'
-              ? 'border-emerald-600 text-emerald-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
+              ? 'bg-white text-slate-900 shadow-2xs'
+              : 'text-slate-500 hover:text-slate-900'
           }`}
         >
-          <MessageSquare className="w-4 h-4" />
+          <MessageSquare className="w-3.5 h-3.5" />
           <span>Direct Inquiries ({inquiries.length})</span>
         </button>
 
         <button
           id="tab-user-visits"
           onClick={() => setActiveSubTab('visits')}
-          className={`pb-3 font-bold text-sm flex items-center gap-2 border-b-2 transition-all cursor-pointer ${
+          className={`flex-1 py-2 rounded-lg font-semibold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
             activeSubTab === 'visits'
-              ? 'border-emerald-600 text-emerald-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
+              ? 'bg-white text-slate-900 shadow-2xs'
+              : 'text-slate-500 hover:text-slate-900'
           }`}
         >
-          <Calendar className="w-4 h-4" />
-          <span>Scheduled Visits ({visits.length})</span>
+          <Calendar className="w-3.5 h-3.5" />
+          <span>Visits ({visits.length})</span>
         </button>
       </div>
 
       {isLoading ? (
         <div className="py-16 text-center text-slate-400 flex items-center justify-center gap-2">
-          <Loader2 className="w-5 h-5 animate-spin text-emerald-600" />
-          <span className="text-sm">Loading activity...</span>
+          <Loader2 className="w-5 h-5 animate-spin text-slate-700" />
+          <span className="text-xs">Loading activity...</span>
         </div>
       ) : activeSubTab === 'inquiries' ? (
         /* Inquiries List */
         inquiries.length === 0 ? (
-          <div className="bg-white p-12 rounded-2xl border border-slate-200 text-center space-y-3">
-            <MessageSquare className="w-12 h-12 text-slate-300 mx-auto" />
-            <h3 className="text-base font-bold text-slate-800">No Inquiries Sent Yet</h3>
+          <div className="bg-white p-12 rounded-2xl border border-slate-200/80 text-center space-y-3">
+            <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center mx-auto">
+              <MessageSquare className="w-6 h-6" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">No Inquiries Sent Yet</h3>
             <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              When you find a room you like in Wakad, Pune or other cities, tap "Contact Owner" to send a direct message.
+              When you find a room you like in Wakad or Pune, click "Contact Owner" on any listing to send a direct message.
             </p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {inquiries.map((inq) => (
               <div
                 key={inq.id}
-                className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs hover:border-emerald-200 transition-all space-y-3"
+                className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs hover:border-slate-300 transition-all space-y-3"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-3">
@@ -137,28 +137,32 @@ export const UserInquiriesView: React.FC = () => {
                       </div>
                     )}
                     <div>
-                      <h4 className="text-sm font-bold text-slate-900">{inq.propertyName || 'Room Listing'}</h4>
-                      <p className="text-xs text-slate-500">📍 {inq.propertyAddress || 'Wakad, Pune'}</p>
+                      <h4 className="text-sm font-semibold text-slate-900">{inq.propertyName || 'Room Listing'}</h4>
+                      <p className="text-xs text-slate-500">Contacted: {inq.ownerName || 'Verified Host'}</p>
                     </div>
                   </div>
+
                   <div>{getStatusBadge(inq.status)}</div>
                 </div>
 
-                <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs text-slate-700">
-                  <span className="font-bold text-slate-900 block mb-1">Your Message:</span>
-                  <p className="leading-relaxed">{inq.message}</p>
+                <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs space-y-1">
+                  <span className="font-semibold text-slate-700 block">Your Message:</span>
+                  <p className="text-slate-800 italic">"{inq.message}"</p>
                 </div>
 
-                {inq.ownerResponse && (
-                  <div className="bg-emerald-50 p-3 rounded-xl border border-emerald-200 text-xs text-emerald-950">
-                    <span className="font-bold text-emerald-900 block mb-1">Owner's Reply:</span>
-                    <p className="leading-relaxed">{inq.ownerResponse}</p>
+                {inq.ownerReply && (
+                  <div className="bg-slate-100/70 p-3 rounded-xl border border-slate-200 text-xs space-y-1">
+                    <div className="flex items-center gap-1.5 font-semibold text-slate-900">
+                      <CheckCircle className="w-3.5 h-3.5 text-slate-700" />
+                      <span>Owner's Direct Reply:</span>
+                    </div>
+                    <p className="text-slate-800">{inq.ownerReply}</p>
                   </div>
                 )}
 
                 <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
-                  <span>Sent: {new Date(inq.createdAt).toLocaleDateString()} at {new Date(inq.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                  {inq.moveInDate && <span>Move-in: {inq.moveInDate}</span>}
+                  <span>Move-in Date: {inq.moveInDate || 'Flexible'}</span>
+                  <span>{new Date(inq.createdAt).toLocaleDateString()}</span>
                 </div>
               </div>
             ))}
@@ -167,48 +171,47 @@ export const UserInquiriesView: React.FC = () => {
       ) : (
         /* Visits List */
         visits.length === 0 ? (
-          <div className="bg-white p-12 rounded-2xl border border-slate-200 text-center space-y-3">
-            <Calendar className="w-12 h-12 text-slate-300 mx-auto" />
-            <h3 className="text-base font-bold text-slate-800">No Scheduled Visits</h3>
+          <div className="bg-white p-12 rounded-2xl border border-slate-200/80 text-center space-y-3">
+            <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center mx-auto">
+              <Calendar className="w-6 h-6" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">No Visits Scheduled Yet</h3>
             <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              Schedule property viewings directly on the listing page to visit rooms in person.
+              You can schedule in-person room inspections directly with landlords by clicking "Schedule Visit".
             </p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {visits.map((vis) => (
               <div
                 key={vis.id}
-                className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-3"
+                className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs hover:border-slate-300 transition-all space-y-3"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                   <div>
-                    <h4 className="text-sm font-bold text-slate-900">{vis.propertyName}</h4>
-                    <p className="text-xs text-slate-500">📍 {vis.propertyAddress}</p>
+                    <h4 className="text-sm font-semibold text-slate-900">{vis.propertyName || 'Room Property'}</h4>
+                    <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
+                      <Clock className="w-3.5 h-3.5 text-slate-400" />
+                      <span>
+                        {vis.visitDate} ({vis.visitTimeSlot})
+                      </span>
+                    </div>
                   </div>
+
                   <div>{getStatusBadge(vis.status)}</div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-4 bg-slate-50 p-3 rounded-xl text-xs font-semibold text-slate-800">
-                  <div className="flex items-center gap-1.5 text-emerald-700">
-                    <Calendar className="w-4 h-4" />
-                    <span>Date: {vis.visitDate}</span>
+                {vis.note && (
+                  <div className="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-lg">
+                    <span className="font-semibold text-slate-700">Your note: </span>
+                    <span>{vis.note}</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-slate-700">
-                    <Clock className="w-4 h-4" />
-                    <span>Time: {vis.visitTimeSlot}</span>
-                  </div>
-                  {vis.ownerPhone && (
-                    <div className="flex items-center gap-1.5 text-slate-600 ml-auto">
-                      <Phone className="w-3.5 h-3.5" />
-                      <span>Host: {vis.ownerName} ({vis.ownerPhone})</span>
-                    </div>
-                  )}
-                </div>
+                )}
 
                 {vis.ownerRemarks && (
-                  <div className="text-xs text-slate-600 bg-slate-100 p-2.5 rounded-lg">
-                    <strong>Host Note:</strong> {vis.ownerRemarks}
+                  <div className="bg-slate-100/70 p-3 rounded-xl border border-slate-200 text-xs">
+                    <span className="font-semibold text-slate-900">Host Instructions: </span>
+                    <span className="text-slate-800">{vis.ownerRemarks}</span>
                   </div>
                 )}
               </div>

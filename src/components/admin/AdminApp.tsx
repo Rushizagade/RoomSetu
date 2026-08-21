@@ -6,18 +6,15 @@ import { GoogleMapWrapper } from '../common/GoogleMapWrapper.tsx';
 import {
   ShieldCheck,
   CheckCircle,
-  XCircle,
   AlertTriangle,
   Users,
   Building2,
-  FileText,
   Activity,
   MapPin,
   RefreshCw,
   Loader2,
   Check,
   X,
-  ExternalLink,
 } from 'lucide-react';
 
 export const AdminApp: React.FC = () => {
@@ -76,7 +73,7 @@ export const AdminApp: React.FC = () => {
   const handleApprove = async (id: string) => {
     try {
       await api.approveProperty(id);
-      showToast('Property Approved & Published!', 'The listing is now discoverable on the map in Pune.', 'success');
+      showToast('Property Approved & Published', 'The listing is now discoverable on the map in Pune.', 'success');
       loadAdminData();
     } catch (err: any) {
       showToast('Approval failed', err.message, 'warning');
@@ -120,24 +117,24 @@ export const AdminApp: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 p-4 sm:p-6 space-y-6">
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-purple-950 via-slate-900 to-indigo-950 text-white rounded-2xl p-6 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="bg-white border border-slate-200/80 text-slate-900 rounded-2xl p-6 shadow-2xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="bg-purple-500/30 text-purple-200 text-xs font-bold px-2.5 py-0.5 rounded-full border border-purple-400/30">
-              System Administration & Moderation
+            <span className="bg-slate-100 text-slate-800 text-[10px] font-bold px-2 py-0.5 rounded-md border border-slate-200">
+              Admin & Moderation
             </span>
-            <span className="text-xs text-purple-300">RoomSetu Trust & Safety</span>
+            <span className="text-xs text-slate-500">RoomSetu Trust & Safety</span>
           </div>
-          <h1 className="text-2xl font-black tracking-tight">Admin Moderation & Approval Hub</h1>
-          <p className="text-xs text-purple-200 mt-1 max-w-xl">
-            Review landlord listing submissions, verify Google Maps geolocations, moderate complaints, and monitor direct 0% brokerage operations.
+          <h1 className="text-2xl font-bold tracking-tight">Admin Moderation & Approval Hub</h1>
+          <p className="text-xs text-slate-500 mt-1 max-w-xl">
+            Review landlord listing submissions, verify Google Maps geolocations, moderate complaints, and monitor 0% brokerage operations.
           </p>
         </div>
 
         <button
           id="admin-refresh-btn"
           onClick={loadAdminData}
-          className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-colors cursor-pointer"
+          className="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-colors cursor-pointer border border-slate-200"
           title="Refresh Data"
         >
           <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
@@ -146,127 +143,129 @@ export const AdminApp: React.FC = () => {
 
       {/* Metric Counters */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-          <span className="text-[11px] font-bold text-amber-600 block">Pending Verification</span>
-          <span className="text-2xl font-black text-amber-700">{pendingQueue.length}</span>
+        <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-2xs">
+          <span className="text-[11px] font-semibold text-slate-500 block">Pending Verification</span>
+          <span className="text-2xl font-bold text-slate-900 mt-1 block">{pendingQueue.length}</span>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-          <span className="text-[11px] font-bold text-emerald-600 block">Active Verified Listings</span>
-          <span className="text-2xl font-black text-emerald-700">{metrics.activeProperties}</span>
+        <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-2xs">
+          <span className="text-[11px] font-semibold text-slate-500 block">Active Verified</span>
+          <span className="text-2xl font-bold text-slate-900 mt-1 block">{metrics.activeProperties}</span>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-          <span className="text-[11px] font-bold text-blue-600 block">Registered Renters</span>
-          <span className="text-2xl font-black text-blue-700">{metrics.totalUsers}</span>
+        <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-2xs">
+          <span className="text-[11px] font-semibold text-slate-500 block">Registered Renters</span>
+          <span className="text-2xl font-bold text-slate-900 mt-1 block">{metrics.totalUsers}</span>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-          <span className="text-[11px] font-bold text-purple-600 block">Property Landlords</span>
-          <span className="text-2xl font-black text-purple-700">{metrics.totalOwners}</span>
+        <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-2xs">
+          <span className="text-[11px] font-semibold text-slate-500 block">Property Owners</span>
+          <span className="text-2xl font-bold text-slate-900 mt-1 block">{metrics.totalOwners}</span>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-          <span className="text-[11px] font-bold text-rose-600 block">Reports / Flags</span>
-          <span className="text-2xl font-black text-rose-700">{reports.length}</span>
+        <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-2xs">
+          <span className="text-[11px] font-semibold text-slate-500 block">Reports / Flags</span>
+          <span className="text-2xl font-bold text-slate-900 mt-1 block">{reports.length}</span>
         </div>
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex border-b border-slate-200 gap-6 overflow-x-auto">
+      <div className="bg-slate-100 p-1 rounded-xl flex items-center gap-1 border border-slate-200/60 overflow-x-auto max-w-3xl">
         <button
           id="admin-tab-queue"
           onClick={() => setActiveTab('queue')}
-          className={`pb-3 font-bold text-sm flex items-center gap-2 border-b-2 whitespace-nowrap transition-all cursor-pointer ${
+          className={`py-2 px-3 rounded-lg font-semibold text-xs flex items-center justify-center gap-1.5 whitespace-nowrap transition-all cursor-pointer ${
             activeTab === 'queue'
-              ? 'border-purple-600 text-purple-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
+              ? 'bg-white text-slate-900 shadow-2xs'
+              : 'text-slate-500 hover:text-slate-900'
           }`}
         >
-          <ShieldCheck className="w-4 h-4" />
-          <span>Pending Approval Queue ({pendingQueue.length})</span>
+          <ShieldCheck className="w-3.5 h-3.5" />
+          <span>Queue ({pendingQueue.length})</span>
         </button>
 
         <button
           id="admin-tab-all-properties"
           onClick={() => setActiveTab('all-properties')}
-          className={`pb-3 font-bold text-sm flex items-center gap-2 border-b-2 whitespace-nowrap transition-all cursor-pointer ${
+          className={`py-2 px-3 rounded-lg font-semibold text-xs flex items-center justify-center gap-1.5 whitespace-nowrap transition-all cursor-pointer ${
             activeTab === 'all-properties'
-              ? 'border-purple-600 text-purple-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
+              ? 'bg-white text-slate-900 shadow-2xs'
+              : 'text-slate-500 hover:text-slate-900'
           }`}
         >
-          <Building2 className="w-4 h-4" />
-          <span>All Properties ({allProperties.length})</span>
+          <Building2 className="w-3.5 h-3.5" />
+          <span>Properties ({allProperties.length})</span>
         </button>
 
         <button
           id="admin-tab-users"
           onClick={() => setActiveTab('users')}
-          className={`pb-3 font-bold text-sm flex items-center gap-2 border-b-2 whitespace-nowrap transition-all cursor-pointer ${
+          className={`py-2 px-3 rounded-lg font-semibold text-xs flex items-center justify-center gap-1.5 whitespace-nowrap transition-all cursor-pointer ${
             activeTab === 'users'
-              ? 'border-purple-600 text-purple-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
+              ? 'bg-white text-slate-900 shadow-2xs'
+              : 'text-slate-500 hover:text-slate-900'
           }`}
         >
-          <Users className="w-4 h-4" />
-          <span>Accounts & Users ({users.length + owners.length})</span>
+          <Users className="w-3.5 h-3.5" />
+          <span>Accounts ({users.length + owners.length})</span>
         </button>
 
         <button
           id="admin-tab-reports"
           onClick={() => setActiveTab('reports')}
-          className={`pb-3 font-bold text-sm flex items-center gap-2 border-b-2 whitespace-nowrap transition-all cursor-pointer ${
+          className={`py-2 px-3 rounded-lg font-semibold text-xs flex items-center justify-center gap-1.5 whitespace-nowrap transition-all cursor-pointer ${
             activeTab === 'reports'
-              ? 'border-purple-600 text-purple-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
+              ? 'bg-white text-slate-900 shadow-2xs'
+              : 'text-slate-500 hover:text-slate-900'
           }`}
         >
-          <AlertTriangle className="w-4 h-4" />
-          <span>Listing Reports ({reports.length})</span>
+          <AlertTriangle className="w-3.5 h-3.5" />
+          <span>Reports ({reports.length})</span>
         </button>
 
         <button
           id="admin-tab-logs"
           onClick={() => setActiveTab('logs')}
-          className={`pb-3 font-bold text-sm flex items-center gap-2 border-b-2 whitespace-nowrap transition-all cursor-pointer ${
+          className={`py-2 px-3 rounded-lg font-semibold text-xs flex items-center justify-center gap-1.5 whitespace-nowrap transition-all cursor-pointer ${
             activeTab === 'logs'
-              ? 'border-purple-600 text-purple-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
+              ? 'bg-white text-slate-900 shadow-2xs'
+              : 'text-slate-500 hover:text-slate-900'
           }`}
         >
-          <Activity className="w-4 h-4" />
-          <span>Audit Logs ({auditLogs.length})</span>
+          <Activity className="w-3.5 h-3.5" />
+          <span>Logs ({auditLogs.length})</span>
         </button>
       </div>
 
       {/* Main Tab Views */}
       {isLoading ? (
         <div className="py-16 text-center text-slate-400 flex items-center justify-center gap-2">
-          <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
-          <span className="text-sm">Loading admin dashboard...</span>
+          <Loader2 className="w-5 h-5 animate-spin text-slate-700" />
+          <span className="text-xs">Loading admin dashboard...</span>
         </div>
       ) : activeTab === 'queue' ? (
         /* PENDING APPROVAL QUEUE */
         pendingQueue.length === 0 ? (
-          <div className="bg-white p-12 rounded-2xl border border-slate-200 text-center space-y-3">
-            <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto" />
-            <h3 className="text-base font-bold text-slate-800">Verification Queue Clear!</h3>
+          <div className="bg-white p-12 rounded-2xl border border-slate-200/80 text-center space-y-3">
+            <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center mx-auto">
+              <CheckCircle className="w-6 h-6" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">Verification Queue Clear</h3>
             <p className="text-xs text-slate-500 max-w-sm mx-auto">
               All submitted landlord listings have been moderated and published to the live user discovery map.
             </p>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-4">
             {pendingQueue.map((prop) => (
               <div
                 key={prop.id}
-                className="bg-white rounded-2xl border border-amber-200 shadow-md overflow-hidden"
+                className="bg-white rounded-2xl border border-slate-200/80 shadow-2xs overflow-hidden"
               >
                 {/* Header */}
-                <div className="p-4 bg-amber-50/70 border-b border-amber-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div className="p-4 bg-slate-50/50 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
-                    <span className="bg-amber-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                    <span className="bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-semibold px-2 py-0.5 rounded-md">
                       Pending Moderation
                     </span>
                     <h3 className="text-base font-bold text-slate-900 mt-1">{prop.propertyName}</h3>
-                    <p className="text-xs text-slate-600">
+                    <p className="text-xs text-slate-500">
                       Owner: <strong>{prop.ownerName}</strong> ({prop.ownerPhone}) · {prop.locality}, {prop.city}
                     </p>
                   </div>
@@ -275,18 +274,18 @@ export const AdminApp: React.FC = () => {
                     <button
                       id={`reject-btn-${prop.id}`}
                       onClick={() => setRejectPropId(prop.id)}
-                      className="bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs px-3.5 py-2 rounded-xl border border-rose-200 transition-colors flex items-center gap-1 cursor-pointer"
+                      className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs px-3.5 py-2 rounded-xl border border-slate-200 transition-colors flex items-center gap-1 cursor-pointer"
                     >
-                      <X className="w-4 h-4" />
-                      <span>Reject Listing</span>
+                      <X className="w-3.5 h-3.5" />
+                      <span>Reject</span>
                     </button>
 
                     <button
                       id={`approve-btn-${prop.id}`}
                       onClick={() => handleApprove(prop.id)}
-                      className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-5 py-2 rounded-xl shadow-sm transition-colors flex items-center gap-1 cursor-pointer"
+                      className="bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs px-4 py-2 rounded-xl shadow-2xs transition-colors flex items-center gap-1 cursor-pointer"
                     >
-                      <Check className="w-4 h-4" />
+                      <Check className="w-3.5 h-3.5" />
                       <span>Approve & Publish</span>
                     </button>
                   </div>
@@ -307,15 +306,15 @@ export const AdminApp: React.FC = () => {
                     <div className="grid grid-cols-3 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
                       <div>
                         <span className="text-slate-500 font-medium block">Monthly Rent</span>
-                        <span className="font-extrabold text-slate-900">₹{prop.monthlyRent.toLocaleString('en-IN')}/mo</span>
+                        <span className="font-bold text-slate-900">₹{prop.monthlyRent.toLocaleString('en-IN')}/mo</span>
                       </div>
                       <div>
                         <span className="text-slate-500 font-medium block">Deposit</span>
-                        <span className="font-extrabold text-slate-900">₹{prop.securityDeposit.toLocaleString('en-IN')}</span>
+                        <span className="font-bold text-slate-900">₹{prop.securityDeposit.toLocaleString('en-IN')}</span>
                       </div>
                       <div>
                         <span className="text-slate-500 font-medium block">Type & Area</span>
-                        <span className="font-extrabold text-slate-900">{prop.roomType} · {prop.area} sq.ft</span>
+                        <span className="font-bold text-slate-900">{prop.roomType} · {prop.area} sq.ft</span>
                       </div>
                     </div>
 
@@ -327,9 +326,9 @@ export const AdminApp: React.FC = () => {
                   {/* Right: Google Maps Coordinates & Pin Verification */}
                   <div className="lg:col-span-5 space-y-2">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-slate-800 flex items-center gap-1">
-                        <MapPin className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>Google Map Coordinates Inspection</span>
+                      <span className="font-semibold text-slate-900 flex items-center gap-1">
+                        <MapPin className="w-3.5 h-3.5 text-slate-700" />
+                        <span>Coordinates Inspection</span>
                       </span>
                       <span className="font-mono text-slate-500 text-[11px]">
                         {prop.latitude.toFixed(4)}, {prop.longitude.toFixed(4)}
@@ -355,9 +354,9 @@ export const AdminApp: React.FC = () => {
         )
       ) : activeTab === 'all-properties' ? (
         /* ALL PROPERTIES TABLE */
-        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+        <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-2xs">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase text-[10px]">
+            <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[10px]">
               <tr>
                 <th className="p-3.5">Property</th>
                 <th className="p-3.5">Location</th>
@@ -370,21 +369,21 @@ export const AdminApp: React.FC = () => {
             <tbody className="divide-y divide-slate-100 text-slate-700">
               {allProperties.map((p) => (
                 <tr key={p.id} className="hover:bg-slate-50/80">
-                  <td className="p-3.5 font-bold text-slate-900">{p.propertyName}</td>
+                  <td className="p-3.5 font-semibold text-slate-900">{p.propertyName}</td>
                   <td className="p-3.5">{p.locality}, {p.city}</td>
-                  <td className="p-3.5 font-semibold text-emerald-800">
+                  <td className="p-3.5 font-semibold text-slate-900">
                     ₹{p.monthlyRent.toLocaleString('en-IN')}
-                    <span className="text-[10px] text-slate-400 block">Dep: ₹{p.securityDeposit.toLocaleString('en-IN')}</span>
+                    <span className="text-[10px] text-slate-400 block font-normal">Dep: ₹{p.securityDeposit.toLocaleString('en-IN')}</span>
                   </td>
                   <td className="p-3.5">{p.ownerName}</td>
                   <td className="p-3.5">
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                      className={`text-[10px] font-semibold px-2 py-0.5 rounded-md border ${
                         p.listingStatus === 'ACTIVE'
-                          ? 'bg-emerald-100 text-emerald-800'
+                          ? 'bg-slate-900 text-white border-slate-900'
                           : p.listingStatus === 'PENDING_APPROVAL'
-                          ? 'bg-amber-100 text-amber-800'
-                          : 'bg-slate-100 text-slate-600'
+                          ? 'bg-slate-100 text-slate-700 border-slate-300'
+                          : 'bg-slate-100 text-slate-600 border-slate-200'
                       }`}
                     >
                       {p.listingStatus}
@@ -394,7 +393,7 @@ export const AdminApp: React.FC = () => {
                     {p.listingStatus === 'PENDING_APPROVAL' ? (
                       <button
                         onClick={() => handleApprove(p.id)}
-                        className="text-emerald-700 hover:text-emerald-800 font-bold underline cursor-pointer"
+                        className="text-slate-900 hover:text-black font-semibold underline cursor-pointer"
                       >
                         Approve
                       </button>
@@ -411,23 +410,23 @@ export const AdminApp: React.FC = () => {
         /* ACCOUNTS & USERS */
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Renters */}
-          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+          <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-2xs">
             <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-              <h3 className="font-bold text-slate-900 text-sm">Renters / Users ({users.length})</h3>
+              <h3 className="font-semibold text-slate-900 text-sm">Renters / Users ({users.length})</h3>
             </div>
             <div className="divide-y divide-slate-100">
               {users.map((u) => (
                 <div key={u.id} className="p-3.5 flex items-center justify-between text-xs">
                   <div>
-                    <span className="font-bold text-slate-900">{u.name}</span>
+                    <span className="font-semibold text-slate-900">{u.name}</span>
                     <span className="text-slate-400 block font-mono">{u.phone}</span>
                   </div>
                   <button
                     onClick={() => handleToggleAccountStatus('user', u.id, u.status)}
-                    className={`px-2.5 py-1 rounded-md font-bold text-[10px] transition-colors cursor-pointer ${
+                    className={`px-2.5 py-1 rounded-md font-semibold text-[10px] transition-colors cursor-pointer border ${
                       u.status === 'ACTIVE'
-                        ? 'bg-emerald-50 text-emerald-800 hover:bg-rose-50 hover:text-rose-700'
-                        : 'bg-rose-100 text-rose-800 hover:bg-emerald-50 hover:text-emerald-700'
+                        ? 'bg-white text-slate-900 border-slate-300 hover:bg-slate-100'
+                        : 'bg-slate-200 text-slate-700 border-slate-300 hover:bg-slate-300'
                     }`}
                   >
                     {u.status}
@@ -438,23 +437,23 @@ export const AdminApp: React.FC = () => {
           </div>
 
           {/* Property Owners */}
-          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+          <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-2xs">
             <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-              <h3 className="font-bold text-slate-900 text-sm">Property Owners ({owners.length})</h3>
+              <h3 className="font-semibold text-slate-900 text-sm">Property Owners ({owners.length})</h3>
             </div>
             <div className="divide-y divide-slate-100">
               {owners.map((o) => (
                 <div key={o.id} className="p-3.5 flex items-center justify-between text-xs">
                   <div>
-                    <span className="font-bold text-slate-900">{o.name}</span>
+                    <span className="font-semibold text-slate-900">{o.name}</span>
                     <span className="text-slate-400 block font-mono">{o.phone} · ⭐ {o.rating || 4.9}</span>
                   </div>
                   <button
                     onClick={() => handleToggleAccountStatus('owner', o.id, o.status)}
-                    className={`px-2.5 py-1 rounded-md font-bold text-[10px] transition-colors cursor-pointer ${
+                    className={`px-2.5 py-1 rounded-md font-semibold text-[10px] transition-colors cursor-pointer border ${
                       o.status === 'ACTIVE'
-                        ? 'bg-emerald-50 text-emerald-800 hover:bg-rose-50 hover:text-rose-700'
-                        : 'bg-rose-100 text-rose-800 hover:bg-emerald-50 hover:text-emerald-700'
+                        ? 'bg-white text-slate-900 border-slate-300 hover:bg-slate-100'
+                        : 'bg-slate-200 text-slate-700 border-slate-300 hover:bg-slate-300'
                     }`}
                   >
                     {o.status}
@@ -467,25 +466,27 @@ export const AdminApp: React.FC = () => {
       ) : activeTab === 'reports' ? (
         /* REPORTS */
         reports.length === 0 ? (
-          <div className="bg-white p-12 rounded-2xl border border-slate-200 text-center space-y-3">
-            <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto" />
-            <h3 className="text-base font-bold text-slate-800">No Reports Filed</h3>
-            <p className="text-xs text-slate-500">All properties meet quality standards.</p>
+          <div className="bg-white p-12 rounded-2xl border border-slate-200/80 text-center space-y-3">
+            <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center mx-auto">
+              <CheckCircle className="w-6 h-6" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">No Reports Filed</h3>
+            <p className="text-xs text-slate-500">All properties meet community quality standards.</p>
           </div>
         ) : (
           <div className="space-y-3">
             {reports.map((rep) => (
-              <div key={rep.id} className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between gap-4">
+              <div key={rep.id} className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-2xs flex items-center justify-between gap-4">
                 <div>
-                  <span className="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
+                  <span className="bg-slate-100 text-slate-800 text-[10px] font-semibold px-2 py-0.5 rounded-md border border-slate-200 uppercase">
                     {rep.reason}
                   </span>
-                  <h4 className="font-bold text-slate-900 text-sm mt-1">{rep.propertyName}</h4>
-                  <p className="text-xs text-slate-600 mt-0.5">"{rep.description}"</p>
+                  <h4 className="font-semibold text-slate-900 text-sm mt-1">{rep.propertyName}</h4>
+                  <p className="text-xs text-slate-500 mt-0.5">"{rep.description}"</p>
                 </div>
                 <button
                   onClick={() => handleModerateReport(rep.id, 'RESOLVED')}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg cursor-pointer"
+                  className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer"
                 >
                   Mark Resolved
                 </button>
@@ -495,15 +496,15 @@ export const AdminApp: React.FC = () => {
         )
       ) : (
         /* AUDIT LOGS */
-        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
-          <div className="p-4 bg-slate-50 border-b border-slate-200 font-bold text-slate-900 text-sm">
-            Real-Time Audit Trail
+        <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-2xs">
+          <div className="p-4 bg-slate-50 border-b border-slate-200 font-semibold text-slate-900 text-sm">
+            Audit Trail
           </div>
           <div className="divide-y divide-slate-100 font-mono text-xs max-h-96 overflow-y-auto">
             {auditLogs.map((log) => (
               <div key={log.id} className="p-3 flex items-center justify-between text-slate-700">
                 <div>
-                  <span className="text-purple-700 font-bold">[{log.action}]</span>{' '}
+                  <span className="text-slate-900 font-semibold">[{log.action}]</span>{' '}
                   <span>{log.details ? JSON.stringify(log.details) : 'Action performed'}</span>
                 </div>
                 <span className="text-[11px] text-slate-400">
@@ -519,30 +520,30 @@ export const AdminApp: React.FC = () => {
       {rejectPropId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setRejectPropId(null)} />
-          <form onSubmit={handleReject} className="relative w-full max-w-md bg-white rounded-2xl p-5 shadow-2xl border border-slate-200 space-y-4 z-10">
+          <form onSubmit={handleReject} className="relative w-full max-w-md bg-white rounded-2xl p-5 shadow-xl border border-slate-200 space-y-4 z-10">
             <h3 className="font-bold text-base text-slate-900">Reject Property Submission</h3>
             <p className="text-xs text-slate-500">Provide constructive feedback so the landlord can correct and re-submit.</p>
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Reason for Rejection</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Reason for Rejection</label>
               <textarea
                 rows={3}
                 required
                 value={rejectReason}
                 onChange={(e) => setRejectReason(e.target.value)}
-                className="w-full p-2.5 bg-white rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-purple-600 focus:outline-none"
+                className="w-full p-2.5 bg-white rounded-xl border border-slate-200 text-xs text-slate-900 focus:border-slate-400 focus:outline-none"
               />
             </div>
             <div className="flex justify-end gap-2">
               <button
                 type="button"
                 onClick={() => setRejectPropId(null)}
-                className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold cursor-pointer"
+                className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-semibold cursor-pointer border border-slate-200"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow-xs cursor-pointer"
+                className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold shadow-2xs cursor-pointer"
               >
                 Confirm Rejection
               </button>

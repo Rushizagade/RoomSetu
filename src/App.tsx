@@ -4,10 +4,7 @@ import { NotificationProvider, useNotifications } from './context/NotificationCo
 import { Header } from './components/common/Header.tsx';
 import { NotificationDrawer } from './components/common/NotificationDrawer.tsx';
 import { AuthModal } from './components/auth/AuthModal.tsx';
-import { AuthLandingPage } from './components/auth/AuthLandingPage.tsx';
-import { UserLoginPage } from './components/auth/UserLoginPage.tsx';
-import { OwnerLoginPage } from './components/auth/OwnerLoginPage.tsx';
-import { AdminLoginPage } from './components/auth/AdminLoginPage.tsx';
+import { LoginPage } from './components/auth/LoginPage.tsx';
 import { UserApp } from './components/user/UserApp.tsx';
 import { OwnerApp } from './components/owner/OwnerApp.tsx';
 import { AdminApp } from './components/admin/AdminApp.tsx';
@@ -69,13 +66,13 @@ const MainExperience: React.FC = () => {
     );
   }
 
-  // If user is explicitly on a login, landing, or guest browse view, show that view
-  if (currentView === 'USER_LOGIN') {
+  // Explicit unauthenticated routes
+  if (currentView === 'USER_LOGIN' || currentView === 'AUTH_LANDING') {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900 selection:bg-emerald-100 selection:text-emerald-900">
         <Header />
         <div className="flex-1">
-          <UserLoginPage />
+          <LoginPage initialRole="USER" />
         </div>
         <NotificationDrawer />
         <AuthModal />
@@ -89,7 +86,7 @@ const MainExperience: React.FC = () => {
       <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900 selection:bg-emerald-100 selection:text-emerald-900">
         <Header />
         <div className="flex-1">
-          <OwnerLoginPage />
+          <LoginPage initialRole="ROOM_OWNER" />
         </div>
         <NotificationDrawer />
         <AuthModal />
@@ -103,21 +100,7 @@ const MainExperience: React.FC = () => {
       <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900 selection:bg-emerald-100 selection:text-emerald-900">
         <Header />
         <div className="flex-1">
-          <AdminLoginPage />
-        </div>
-        <NotificationDrawer />
-        <AuthModal />
-        <ToastContainer />
-      </div>
-    );
-  }
-
-  if (currentView === 'AUTH_LANDING') {
-    return (
-      <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900 selection:bg-emerald-100 selection:text-emerald-900">
-        <Header />
-        <div className="flex-1">
-          <AuthLandingPage />
+          <LoginPage initialRole="ADMIN" />
         </div>
         <NotificationDrawer />
         <AuthModal />
@@ -151,18 +134,17 @@ const MainExperience: React.FC = () => {
           {user.role === 'ADMIN' && <AdminApp />}
         </div>
         <NotificationDrawer />
-        <AuthModal />
         <ToastContainer />
       </div>
     );
   }
 
-  // Fallback to AuthLandingPage if unauthenticated
+  // Default fallback for unauthenticated visitors: Direct single Login / Register screen
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900 selection:bg-emerald-100 selection:text-emerald-900">
       <Header />
       <div className="flex-1">
-        <AuthLandingPage />
+        <LoginPage initialRole="USER" />
       </div>
       <NotificationDrawer />
       <AuthModal />

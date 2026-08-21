@@ -5,10 +5,15 @@ import { api } from '../services/api.ts';
 export type AuthView =
   | 'AUTH_LANDING'
   | 'USER_LOGIN'
+  | 'USER_REGISTER'
   | 'OWNER_LOGIN'
+  | 'OWNER_REGISTER'
   | 'ADMIN_LOGIN'
+  | 'ADMIN_PORTAL'
   | 'BROWSE_ROOMS'
   | 'MAIN_APP';
+
+export type AuthMode = 'LOGIN' | 'REGISTER';
 
 interface AuthContextType {
   user: AuthUser | null;
@@ -16,10 +21,13 @@ interface AuthContextType {
   token: string | null;
   isLoading: boolean;
   currentView: AuthView;
+  authMode: AuthMode;
   isAuthModalOpen: boolean;
   authModalInitialRole: 'USER' | 'ROOM_OWNER' | 'ADMIN';
-  navigateTo: (view: AuthView) => void;
-  openAuthModal: (initialRole?: 'USER' | 'ROOM_OWNER' | 'ADMIN') => void;
+  authModalInitialMode: AuthMode;
+  setAuthMode: (mode: AuthMode) => void;
+  navigateTo: (view: AuthView, mode?: AuthMode) => void;
+  openAuthModal: (initialRole?: 'USER' | 'ROOM_OWNER' | 'ADMIN', initialMode?: AuthMode) => void;
   closeAuthModal: () => void;
   loginWithOtp: (phone: string, role: 'USER' | 'ROOM_OWNER', code: string, name?: string) => Promise<void>;
   loginAdmin: (email: string, pass: string) => Promise<void>;
@@ -34,8 +42,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [token, setToken] = useState<string | null>(localStorage.getItem('roomsetu_token'));
   const [isLoading, setIsLoading] = useState(true);
   const [currentView, setCurrentView] = useState<AuthView>('AUTH_LANDING');
+  const [authMode, setAuthMode] = useState<AuthMode>('LOGIN');
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authModalInitialRole, setAuthModalInitialRole] = useState<'USER' | 'ROOM_OWNER' | 'ADMIN'>('USER');
+  const [authModalInitialMode, setAuthModalInitialMode] = useState<AuthMode>('LOGIN');
 
   const role: UserRole | 'GUEST' = user ? user.role : 'GUEST';
 
@@ -66,12 +76,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     loadUser();
   }, []);
 
-  const navigateTo = (view: AuthView) => {
+  const navigateTo = (view: AuthView, mode?: AuthMode) => {
+    if (mode) setAuthMode(mode);
     setCurrentView(view);
   };
 
-  const openAuthModal = (initialRole: 'USER' | 'ROOM_OWNER' | 'ADMIN' = 'USER') => {
+  const openAuthModal = (
+    initialRole: 'USER' | 'ROOM_OWNER' | 'ADMIN' = 'USER',
+    initialMode: AuthMode = 'LOGIN'
+  ) => {
     setAuthModalInitialRole(initialRole);
+    setAuthModalInitialMode(initialMode);
     setIsAuthModalOpen(true);
   };
 
@@ -126,8 +141,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         token,
         isLoading,
         currentView,
+        authMode,
         isAuthModalOpen,
         authModalInitialRole,
+        authModalInitialMode,
+        setAuthMode,
         navigateTo,
         openAuthModal,
         closeAuthModal,

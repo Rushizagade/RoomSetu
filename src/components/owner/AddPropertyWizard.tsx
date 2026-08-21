@@ -7,19 +7,15 @@ import { useNotifications } from '../../context/NotificationContext.tsx';
 import {
   X,
   MapPin,
-  Building2,
-  Image as ImageIcon,
   CheckCircle2,
   ArrowRight,
   ArrowLeft,
   Upload,
   ShieldCheck,
   Compass,
-  AlertCircle,
   Loader2,
   Trash2,
   Check,
-  Navigation,
 } from 'lucide-react';
 
 interface AddPropertyWizardProps {
@@ -55,7 +51,7 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
   );
   const [tenantTypes, setTenantTypes] = useState<TenantType[]>(['FAMILY', 'WORKING_PROFESSIONALS']);
 
-  // Google Maps Location State (THE EXACT USER WORKFLOW)
+  // Google Maps Location State
   const [locationState, setLocationState] = useState<{
     address: string;
     formattedAddress: string;
@@ -194,7 +190,7 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
     }
   };
 
-  // Handle Photo Upload (Base64 file reader)
+  // Handle Photo Upload
   const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -215,7 +211,6 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
             },
           ]);
         } catch {
-          // Add local data url fallback
           setUploadedImages((prev) => [
             ...prev,
             { url: base64, thumbnailUrl: base64, isCover: prev.length === 0 },
@@ -226,7 +221,7 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
     }
   };
 
-  // Final Submit to Backend API
+  // Final Submit
   const handleFinalSubmit = async (submitForReview: boolean = true) => {
     setIsLoading(true);
     try {
@@ -268,8 +263,8 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
 
       const res = await api.createProperty(payload);
       showToast(
-        submitForReview ? 'Property Submitted for Review!' : 'Draft Saved!',
-        `Your listing "${propertyName}" in ${locationState.locality} is now in the pipeline.`,
+        submitForReview ? 'Property Submitted for Review' : 'Draft Saved',
+        `Your listing "${propertyName}" in ${locationState.locality} is registered.`,
         'success'
       );
       onSuccess(res.property);
@@ -284,43 +279,38 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-xs" onClick={onClose} />
+      <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={onClose} />
 
       {/* Modal Container */}
-      <div className="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-10 max-h-[92vh] flex flex-col my-auto">
+      <div className="relative w-full max-w-4xl bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden z-10 max-h-[92vh] flex flex-col my-auto">
         {/* Header */}
-        <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-sm">
-              RS
-            </div>
-            <div>
-              <h2 className="text-base font-extrabold text-slate-900">List Your Property Free</h2>
-              <p className="text-xs text-slate-500">
-                0% Brokerage · Verified direct connection with tenants
-              </p>
-            </div>
+        <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+          <div>
+            <h2 className="text-base font-bold text-slate-900">List Your Property Free</h2>
+            <p className="text-xs text-slate-500">
+              0% Brokerage · Direct connection with verified tenants
+            </p>
           </div>
 
           <button
             id="close-add-wizard-btn"
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
+            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Step Indicator */}
-        <div className="px-6 py-3 bg-slate-100 border-b border-slate-200 flex items-center justify-between text-xs font-bold">
+        <div className="px-6 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs font-semibold">
           <div
             className={`flex items-center gap-2 ${
-              currentStep >= 1 ? 'text-blue-700' : 'text-slate-400'
+              currentStep >= 1 ? 'text-slate-900' : 'text-slate-400'
             }`}
           >
             <span
-              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                currentStep >= 1 ? 'bg-blue-600 text-white' : 'bg-slate-300 text-slate-600'
+              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                currentStep >= 1 ? 'bg-slate-900 text-white' : 'bg-slate-200 text-slate-600'
               }`}
             >
               1
@@ -328,16 +318,16 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
             <span>1. Basic Info</span>
           </div>
 
-          <div className="h-0.5 w-8 bg-slate-300" />
+          <div className="h-px w-8 bg-slate-300" />
 
           <div
             className={`flex items-center gap-2 ${
-              currentStep >= 2 ? 'text-blue-700' : 'text-slate-400'
+              currentStep >= 2 ? 'text-slate-900' : 'text-slate-400'
             }`}
           >
             <span
-              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                currentStep >= 2 ? 'bg-blue-600 text-white' : 'bg-slate-300 text-slate-600'
+              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                currentStep >= 2 ? 'bg-slate-900 text-white' : 'bg-slate-200 text-slate-600'
               }`}
             >
               2
@@ -345,16 +335,16 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
             <span>2. Google Map & Location</span>
           </div>
 
-          <div className="h-0.5 w-8 bg-slate-300" />
+          <div className="h-px w-8 bg-slate-300" />
 
           <div
             className={`flex items-center gap-2 ${
-              currentStep >= 3 ? 'text-blue-700' : 'text-slate-400'
+              currentStep >= 3 ? 'text-slate-900' : 'text-slate-400'
             }`}
           >
             <span
-              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                currentStep >= 3 ? 'bg-blue-600 text-white' : 'bg-slate-300 text-slate-600'
+              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                currentStep >= 3 ? 'bg-slate-900 text-white' : 'bg-slate-200 text-slate-600'
               }`}
             >
               3
@@ -369,7 +359,7 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
           {currentStep === 1 && (
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
                   Property Title / Listing Headline
                 </label>
                 <input
@@ -379,18 +369,18 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
                   value={propertyName}
                   onChange={(e) => setPropertyName(e.target.value)}
                   placeholder="e.g. 2 BHK Semi-Furnished Flat in Wakad"
-                  className="w-full p-3 bg-white rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                  className="w-full p-3 bg-white rounded-xl border border-slate-200 text-sm font-medium text-slate-900 focus:border-slate-400 focus:outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Room / BHK Type</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Room / BHK Type</label>
                   <select
                     id="prop-room-type-select"
                     value={roomType}
                     onChange={(e: any) => setRoomType(e.target.value)}
-                    className="w-full p-2.5 bg-white rounded-xl border border-slate-300 text-xs font-semibold"
+                    className="w-full p-2.5 bg-white rounded-xl border border-slate-200 text-xs font-medium text-slate-900 focus:border-slate-400 focus:outline-none"
                   >
                     <option value="1 RK">1 RK</option>
                     <option value="1 BHK">1 BHK</option>
@@ -402,12 +392,12 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Property Type</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Property Type</label>
                   <select
                     id="prop-category-select"
                     value={propertyType}
                     onChange={(e: any) => setPropertyType(e.target.value)}
-                    className="w-full p-2.5 bg-white rounded-xl border border-slate-300 text-xs font-semibold"
+                    className="w-full p-2.5 bg-white rounded-xl border border-slate-200 text-xs font-medium text-slate-900 focus:border-slate-400 focus:outline-none"
                   >
                     <option value="APARTMENT">Apartment / Flat</option>
                     <option value="INDEPENDENT_HOUSE">Independent House</option>
@@ -417,12 +407,12 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Furnishing</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Furnishing</label>
                   <select
                     id="prop-furnish-select"
                     value={furnishingStatus}
                     onChange={(e: any) => setFurnishingStatus(e.target.value)}
-                    className="w-full p-2.5 bg-white rounded-xl border border-slate-300 text-xs font-semibold"
+                    className="w-full p-2.5 bg-white rounded-xl border border-slate-200 text-xs font-medium text-slate-900 focus:border-slate-400 focus:outline-none"
                   >
                     <option value="FULLY_FURNISHED">Fully Furnished</option>
                     <option value="SEMI_FURNISHED">Semi Furnished</option>
@@ -434,7 +424,7 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
               {/* Pricing Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
                     Monthly Rent (₹)
                   </label>
                   <input
@@ -443,12 +433,12 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
                     required
                     value={monthlyRent}
                     onChange={(e) => setMonthlyRent(Number(e.target.value))}
-                    className="w-full p-2.5 bg-white rounded-xl border border-slate-300 text-sm font-bold text-emerald-800"
+                    className="w-full p-2.5 bg-white rounded-xl border border-slate-200 text-sm font-bold text-slate-900 focus:border-slate-400 focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
                     Security Deposit (₹)
                   </label>
                   <input
@@ -457,12 +447,12 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
                     required
                     value={securityDeposit}
                     onChange={(e) => setSecurityDeposit(Number(e.target.value))}
-                    className="w-full p-2.5 bg-white rounded-xl border border-slate-300 text-sm font-bold"
+                    className="w-full p-2.5 bg-white rounded-xl border border-slate-200 text-sm font-semibold text-slate-900 focus:border-slate-400 focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
                     Maintenance Charge (₹/mo)
                   </label>
                   <input
@@ -470,7 +460,7 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
                     type="number"
                     value={maintenanceCharge}
                     onChange={(e) => setMaintenanceCharge(Number(e.target.value))}
-                    className="w-full p-2.5 bg-white rounded-xl border border-slate-300 text-sm font-bold"
+                    className="w-full p-2.5 bg-white rounded-xl border border-slate-200 text-sm font-semibold text-slate-900 focus:border-slate-400 focus:outline-none"
                   />
                 </div>
               </div>
@@ -478,39 +468,39 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
               {/* Specs & Description */}
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Carpet Area (sq.ft)</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Carpet Area (sq.ft)</label>
                   <input
                     id="prop-area-input"
                     type="number"
                     value={area}
                     onChange={(e) => setArea(Number(e.target.value))}
-                    className="w-full p-2 bg-white rounded-xl border border-slate-300 text-xs font-semibold"
+                    className="w-full p-2 bg-white rounded-xl border border-slate-200 text-xs font-medium text-slate-900 focus:border-slate-400 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Bedrooms</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Bedrooms</label>
                   <input
                     id="prop-bedrooms-input"
                     type="number"
                     value={bedrooms}
                     onChange={(e) => setBedrooms(Number(e.target.value))}
-                    className="w-full p-2 bg-white rounded-xl border border-slate-300 text-xs font-semibold"
+                    className="w-full p-2 bg-white rounded-xl border border-slate-200 text-xs font-medium text-slate-900 focus:border-slate-400 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Bathrooms</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Bathrooms</label>
                   <input
                     id="prop-bathrooms-input"
                     type="number"
                     value={bathrooms}
                     onChange={(e) => setBathrooms(Number(e.target.value))}
-                    className="w-full p-2 bg-white rounded-xl border border-slate-300 text-xs font-semibold"
+                    className="w-full p-2 bg-white rounded-xl border border-slate-200 text-xs font-medium text-slate-900 focus:border-slate-400 focus:outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Preferred Tenants</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Preferred Tenants</label>
                 <div className="flex flex-wrap gap-2">
                   {[
                     { key: 'FAMILY', label: 'Families' },
@@ -524,8 +514,8 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
                       onClick={() => handleTenantToggle(t.key as any)}
                       className={`text-xs px-3 py-1.5 rounded-lg border font-semibold transition-colors cursor-pointer ${
                         tenantTypes.includes(t.key as any)
-                          ? 'bg-blue-600 text-white border-blue-600'
-                          : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+                          ? 'bg-slate-900 text-white border-slate-900'
+                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                       }`}
                     >
                       {t.label}
@@ -535,35 +525,35 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Description</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Description</label>
                 <textarea
                   id="prop-desc-textarea"
                   rows={3}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full p-3 bg-white rounded-xl border border-slate-300 text-xs text-slate-800 focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                  className="w-full p-3 bg-white rounded-xl border border-slate-200 text-xs text-slate-900 focus:border-slate-400 focus:outline-none"
                 />
               </div>
             </div>
           )}
 
-          {/* STEP 2: THE USER-REQUESTED GOOGLE MAPS LOCATION WORKFLOW */}
+          {/* STEP 2: GOOGLE MAPS LOCATION WORKFLOW */}
           {currentStep === 2 && (
             <div className="space-y-4">
-              <div className="bg-blue-50 border border-blue-200 p-3.5 rounded-xl text-xs text-blue-900 flex items-start gap-2.5">
-                <Compass className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+              <div className="bg-slate-50 border border-slate-200 p-3.5 rounded-xl text-xs text-slate-800 flex items-start gap-2.5">
+                <Compass className="w-5 h-5 text-slate-700 shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold block">Google Maps & Places Geolocation Workflow</span>
-                  <span>
+                  <span className="font-semibold block">Google Maps & Places Geolocation</span>
+                  <span className="text-slate-500">
                     Search your property address using Google Places Autocomplete, then confirm or drag the
-                    pin on Google Maps to record precise latitude, longitude, and placeId for 100% accurate renter navigation.
+                    pin on Google Maps to record precise coordinates for accurate tenant navigation.
                   </span>
                 </div>
               </div>
 
               {/* Search Address in Google Maps */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   1. Search Address in Google Maps (Places Autocomplete)
                 </label>
                 <LocationSearchInput
@@ -577,20 +567,20 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs">
                 <div>
                   <span className="text-slate-500 font-medium block">Selected Address:</span>
-                  <span className="font-bold text-slate-900">{locationState.formattedAddress}</span>
+                  <span className="font-semibold text-slate-900">{locationState.formattedAddress}</span>
                 </div>
                 <div>
                   <span className="text-slate-500 font-medium block">Locality & City:</span>
-                  <span className="font-bold text-slate-900">{locationState.locality}, {locationState.city}</span>
+                  <span className="font-semibold text-slate-900">{locationState.locality}, {locationState.city}</span>
                 </div>
               </div>
 
               {/* Google Maps Marker & Pin Canvas */}
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                    <MapPin className="w-4 h-4 text-emerald-600" />
-                    <span>2. Google Maps Marker (Drag to exact room/gate entrance)</span>
+                  <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                    <MapPin className="w-4 h-4 text-slate-700" />
+                    <span>2. Google Maps Marker (Drag to exact entrance)</span>
                   </label>
                   <span className="text-[11px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200">
                     Lat: {locationState.latitude.toFixed(5)}, Lng: {locationState.longitude.toFixed(5)}
@@ -607,12 +597,12 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
                 />
               </div>
 
-              {/* 3. Confirm Location Button -> Produces lat, lng, googlePlaceId, formattedAddress */}
-              <div className="bg-slate-900 text-white p-4 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md">
+              {/* 3. Confirm Location Button */}
+              <div className="bg-slate-900 text-white p-4 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-2xs">
                 <div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className={`w-5 h-5 ${locationState.isLocationConfirmed ? 'text-emerald-400' : 'text-amber-400'}`} />
-                    <span className="font-extrabold text-sm">
+                    <CheckCircle2 className={`w-5 h-5 ${locationState.isLocationConfirmed ? 'text-slate-100' : 'text-slate-400'}`} />
+                    <span className="font-bold text-sm">
                       {locationState.isLocationConfirmed ? 'Location Coordinates Verified' : 'Confirm Exact Location'}
                     </span>
                   </div>
@@ -626,12 +616,12 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
                   type="button"
                   onClick={() => {
                     setLocationState((prev) => ({ ...prev, isLocationConfirmed: true }));
-                    showToast('Location Confirmed!', 'Latitude, Longitude & Place ID locked for listing.', 'success');
+                    showToast('Location Confirmed', 'Latitude, Longitude & Place ID locked for listing.', 'success');
                   }}
-                  className={`px-4 py-2 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+                  className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
                     locationState.isLocationConfirmed
-                      ? 'bg-emerald-600 text-white hover:bg-emerald-700'
-                      : 'bg-amber-500 text-slate-900 hover:bg-amber-400'
+                      ? 'bg-white text-slate-900 hover:bg-slate-100'
+                      : 'bg-slate-700 text-white hover:bg-slate-600'
                   }`}
                 >
                   {locationState.isLocationConfirmed ? '✓ Location Confirmed' : 'Confirm Location'}
@@ -645,20 +635,20 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
             <div className="space-y-5">
               {/* Photo Upload Area */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   Property Photos ({uploadedImages.length} uploaded)
                 </label>
-                <div className="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center hover:border-blue-500 transition-colors bg-slate-50">
-                  <Upload className="w-8 h-8 text-slate-400 mx-auto mb-1.5" />
-                  <p className="text-xs font-bold text-slate-700">Drag & drop photos or click to upload</p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Upload high quality hall, bedroom, and kitchen photos</p>
+                <div className="border-2 border-dashed border-slate-200 rounded-xl p-4 text-center hover:border-slate-400 transition-colors bg-slate-50">
+                  <Upload className="w-7 h-7 text-slate-400 mx-auto mb-1.5" />
+                  <p className="text-xs font-semibold text-slate-700">Drag & drop photos or click to upload</p>
+                  <p className="text-[11px] text-slate-500 mt-0.5">Upload clear photos of the room, kitchen, and bathroom</p>
                   <input
                     id="property-images-file-input"
                     type="file"
                     multiple
                     accept="image/*"
                     onChange={handleImageFileChange}
-                    className="mt-2 text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    className="mt-2 text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-200 file:text-slate-800 hover:file:bg-slate-300"
                   />
                 </div>
 
@@ -669,14 +659,14 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
                       <div key={idx} className="relative aspect-4/3 rounded-lg overflow-hidden border border-slate-200 group">
                         <img src={img.url} alt="prop" className="w-full h-full object-cover" />
                         {img.isCover && (
-                          <span className="absolute top-1 left-1 bg-emerald-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
+                          <span className="absolute top-1 left-1 bg-slate-900 text-white text-[9px] font-semibold px-1.5 py-0.5 rounded">
                             Cover
                           </span>
                         )}
                         <button
                           type="button"
                           onClick={() => setUploadedImages(uploadedImages.filter((_, i) => i !== idx))}
-                          className="absolute top-1 right-1 p-1 bg-rose-600 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute top-1 right-1 p-1 bg-slate-900 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <Trash2 className="w-3 h-3" />
                         </button>
@@ -688,7 +678,7 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
 
               {/* Amenities Grid */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-2">
+                <label className="block text-xs font-semibold text-slate-700 mb-2">
                   Select Available Amenities ({selectedAmenities.length} selected)
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -699,14 +689,14 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
                         key={amenity}
                         type="button"
                         onClick={() => handleAmenityToggle(amenity)}
-                        className={`p-2.5 rounded-xl border text-xs font-semibold flex items-center justify-between transition-all cursor-pointer ${
+                        className={`p-2.5 rounded-xl border text-xs font-medium flex items-center justify-between transition-all cursor-pointer ${
                           isSelected
-                            ? 'bg-blue-50 border-blue-500 text-blue-900'
+                            ? 'bg-slate-900 border-slate-900 text-white'
                             : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
                         }`}
                       >
                         <span>{amenity.replace(/_/g, ' ')}</span>
-                        {isSelected && <Check className="w-3.5 h-3.5 text-blue-600" />}
+                        {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
                       </button>
                     );
                   })}
@@ -723,7 +713,7 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
               id="wizard-prev-btn"
               type="button"
               onClick={() => setCurrentStep((prev) => prev - 1)}
-              className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer border border-slate-200"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back</span>
@@ -738,7 +728,7 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
                 id="wizard-next-btn"
                 type="button"
                 onClick={() => setCurrentStep((prev) => prev + 1)}
-                className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+                className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-2xs"
               >
                 <span>Continue to {currentStep === 1 ? 'Location & Map' : 'Photos & Amenities'}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -750,7 +740,7 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
                   type="button"
                   disabled={isLoading}
                   onClick={() => handleFinalSubmit(false)}
-                  className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold cursor-pointer"
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold cursor-pointer border border-slate-200"
                 >
                   Save as Draft
                 </button>
@@ -760,7 +750,7 @@ export const AddPropertyWizard: React.FC<AddPropertyWizardProps> = ({
                   type="button"
                   disabled={isLoading}
                   onClick={() => handleFinalSubmit(true)}
-                  className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-md flex items-center gap-1.5 cursor-pointer"
+                  className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold shadow-2xs flex items-center gap-1.5 cursor-pointer"
                 >
                   {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
                   <span>Publish / Submit for Review</span>
