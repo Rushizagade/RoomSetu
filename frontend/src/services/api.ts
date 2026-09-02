@@ -11,8 +11,8 @@ import {
   LocationSuggestion,
 } from '../types/index.ts';
 
-const API_BASE = process.env.VITE_API_URL 
-  ? `${process.env.VITE_API_URL}/api` 
+const API_BASE = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api`
   : '/api';
 
 function getAuthHeader(): Record<string, string> {
@@ -31,6 +31,15 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     ...options,
     headers,
   });
+
+  // Guard against non-JSON responses (e.g. HTML error pages)
+  const contentType = response.headers.get('content-type') || '';
+  if (!contentType.includes('application/json')) {
+    throw new Error(
+      `Server returned an unexpected response (${response.status}). ` +
+      `Please check that the backend API is running and accessible.`
+    );
+  }
 
   const data = await response.json();
 
